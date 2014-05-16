@@ -1,5 +1,4 @@
 #  获取支付form
-    require 'boc_pay'
     @boc_form = Boc::Pay.new do |pay|
       pay.orderNo = params[:orderId]
       pay.orderAmount = params[:orderAmount].to_i / 100
@@ -11,7 +10,6 @@
     # TYPE POST
     def boc_notify
       notify_params = params.except(*request.path_parameters.keys)
-      require 'boc_pay'
 
       verify = Boc::Notify.new(notify_params).verify
       if verify

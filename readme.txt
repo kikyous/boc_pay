@@ -10,8 +10,6 @@
     # pay controller
     # TYPE POST
     def boc_notify
-      require 'boc_pay'
-
       notify_params = params.except(*request.path_parameters.keys)
       require 'boc_pay'
 

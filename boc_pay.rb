@@ -19,10 +19,10 @@ module Boc
       i,o = Open3.popen3('java -cp pkcs7.jar com.bocnet.common.security.P7Sign taobao.jks 11111111', chdir: __dir__ )
       i.write(input)
       i.close
-      o.read.sub(/\[SIGN OK\]\n/, '')
+      o.read
     end
 
-    def get_form(submit_button= '<INPUT TYPE="submit" VALUE="支付">')
+    def get_form(submit_button= '<INPUT TYPE="submit" VALUE="中行支付">')
       post_params = params
       post_params[:signData] = sign
       form = ["<FORM METHOD='POST' ACTION='#{@@actionUrl}'>"]

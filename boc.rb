@@ -5,7 +5,7 @@ module Boc
     @@merchantNo = '104110059475555'
     @@payType = '1'
     @@curCode = '001'
-    @@orderUrl = 'http://www.tld.com.cn/'
+    @@orderUrl = 'http://www.tld.com.cn/api/front_money_payment_records/boc_notify'
 
     attr_accessor :orderNo, :orderAmount, :orderTime, :orderNote, :orderTimeoutDate
 
@@ -16,20 +16,20 @@ module Boc
     def sign
       input = params.values.join('|')
       require 'open3'
-      i,o = Open3.popen3('java -cp pkcs7.jar com.bocnet.common.security.P7Sign taobao.jks 11111111', chdir: __dir__ )
+      i,o = Open3.popen3('java -cp pkcs7.jar com.bocnet.common.security.P7Sign taobao.jks 11111111', chdir: File.dirname(__FILE__))
       i.write(input)
       i.close
       o.read
     end
 
-    def get_form(submit_button= '<INPUT TYPE="submit" VALUE="中行支付">')
+    def get_form
       post_params = params
       post_params[:signData] = sign
       form = ["<FORM METHOD='POST' ACTION='#{@@actionUrl}'>"]
       post_params.each do |k, v|
         form << "<INPUT TYPE='HIDDEN' NAME='#{k}' VALUE='#{v}'>"
       end
-      form << submit_button
+      form << '<INPUT TYPE="submit" VALUE="中行支付">'
       form << '</FORM>'
       form.join
     end
@@ -74,7 +74,7 @@ module Boc
       sign_data = @params.delete :signData
       input = @params.values.join('|')
       require 'open3'
-      stdin, stdout, stderr, wait_thr = Open3.popen3("java -cp pkcs7.jar com.bocnet.common.security.P7Verify BOCCA.cer '#{sign_data}'", chdir: __dir__ )
+      stdin, stdout, stderr, wait_thr = Open3.popen3("java -cp pkcs7.jar com.bocnet.common.security.P7Verify BOCCA.cer '#{sign_data}'", chdir: File.dirname(__FILE__))
       stdin.write(input)
       stdin.close
       wait_thr.value == 0

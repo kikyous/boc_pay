@@ -46,12 +46,12 @@ module Boc
       {
         merchantNo: @@merchantNo,
         payType: @@payType,
-        curCode: @@curCode,
-        orderUrl: @@orderUrl,
         orderNo: orderNo,
+        curCode: @@curCode,
         orderAmount: orderAmount,
         orderTime: orderTime,
         orderNote: orderNote,
+        orderUrl: @@orderUrl,
         orderTimeoutDate: orderTimeoutDate
       }
     end
